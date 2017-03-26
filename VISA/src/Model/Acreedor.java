@@ -1,4 +1,4 @@
-package Codigos;
+package Model;
 
 public class Acreedor {
     private int idRepresentante;

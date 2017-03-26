@@ -1,4 +1,4 @@
-package Codigos;
+package Model;
 
 public class Progreso {
     private int     idExpediente,

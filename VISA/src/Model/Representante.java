@@ -1,4 +1,4 @@
-package Codigos;
+package Model;
 
 public class Representante extends Persona{
     private int id;
