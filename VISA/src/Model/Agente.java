@@ -63,7 +63,7 @@ public class Agente extends Persona {
      
      //Método para buscar un agente por su id
      
-     public static Agente buscarAgente(int id){
+     public static Agente buscarPorId(int id){
          //
          String[] registro = new String[0];
          SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
