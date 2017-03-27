@@ -1,6 +1,6 @@
 package Model;
 
-public class Acreedor {
+public class Acreedor extends Persona{
     private int idRepresentante;
     private int id;
     

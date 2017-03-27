@@ -2,7 +2,7 @@ package Model;
 
 import java.util.Date;
 
-public class Agente {
+public class Agente extends Persona {
     private int id;
     private Date fechaIngreso;
     private Date fechaNacimiento;
