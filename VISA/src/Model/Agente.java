@@ -1,6 +1,8 @@
 package Model;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -16,9 +18,15 @@ public class Agente extends Persona {
         
     }
     
-    public Agente(int id,Date fechaIngreso, Date fechaNacimiento ){
-        
-    }
+    public Agente(int id,String nombre, String apellidoP, String apellidoM, 
+            String telefono, String celular, String direccion,Date fechaIngreso, 
+            Date fechaNacimiento,String password ){
+        super(nombre,apellidoP,apellidoM,celular,celular,direccion);
+        this.id = id;
+        this.fechaIngreso = fechaIngreso;
+        this.fechaNacimiento = fechaNacimiento; 
+        this.password = password;
+        }
     //Métodos de acceso
     public void setId(int id){
         this.id=id;
@@ -57,7 +65,8 @@ public class Agente extends Persona {
      
      public static Agente buscarAgente(int id){
          //
-         String[] registro;
+         String[] registro = new String[0];
+         SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
          boolean encontrado = false;
          try{
             Scanner lector = new Scanner(new File("src/Resources/Agentes.txt"));
@@ -76,7 +85,25 @@ public class Agente extends Persona {
          }
          //Si si se encontró
          if(encontrado){
-            return null;
+             Agente buscado;
+             try{
+                buscado = new Agente(Integer.parseInt(registro[0].trim()),//id
+                                            registro[1].trim(),//nombre
+                                            registro[2].trim(),//paterno
+                                            registro[3].trim(),//materno
+                                            registro[4].trim(),//telefono
+                                            registro[5].trim(),//celular
+                                            registro[6].trim(),//direccion
+                                            format.parse(registro[7].trim()),
+                                            format.parse(registro[8].trim()),
+                                            registro[9].trim()//password
+                                        );
+             }catch(Exception ex){
+                 System.out.println(ex.getMessage());
+                 return null;
+             }
+            return buscado;
          }
          return null;
      }
+}
