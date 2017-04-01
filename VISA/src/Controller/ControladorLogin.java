@@ -62,6 +62,9 @@ public class ControladorLogin extends Controller{
                 login.mandarMensaje("ID o contraseña incorrectos, por favor verifique");
             }
         }
+        else{
+            login.mandarMensaje("Agente no encontrado");
+        }
     }
     @Override
     public void correr(){
