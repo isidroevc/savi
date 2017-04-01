@@ -1,17 +1,18 @@
 package View;
 
-import java.awt.Color;
+
+import Controller.ControladorLogin;
+import Controller.Controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
-public class VistaMenu{
-    private JFrame ventana;
+public class VistaMenu extends View{
+    
     private JPanel panel;
     private JLabel fondo;
     private JLabel marco;
@@ -20,14 +21,19 @@ public class VistaMenu{
     private JButton salir;
     private String path="src/Imagenes/";
     
-    public void show(){
+    private ControladorMenu controlador;
+    
+    public VistaMenu(){
         crear();
         armar();
-        lanzar();
+        
     }
-    
-    void crear(){
-        ventana =     new JFrame();
+    public void conectarControlador(Controller c){
+        this.controlador = (ControladorLogin)c;
+    }
+        
+    @Override
+    protected void crear(){
         panel =       new JPanel();
         fondo =       new JLabel();
         marco =       new JLabel();
@@ -36,12 +42,13 @@ public class VistaMenu{
         salir =       new JButton("Salir");
     }
 
-    void armar() {
+    @Override
+    protected void armar() {
       // este es el frame  
-      ventana.setTitle(null); //  -- Falta el titulo --
-      ventana.setSize(500,400);
-      ventana.setLocationRelativeTo(null);
-      ventana.setResizable(false);
+      this.setTitle(null); //  -- Falta el titulo --
+      this.setSize(500,400);
+      this.setLocationRelativeTo(null);
+      this.setResizable(false);
       
       panel.setLayout(null);
             
@@ -65,11 +72,7 @@ public class VistaMenu{
       panel.add(fondo);
     }
     
-    void lanzar(){
-        ventana.getContentPane().add(panel);
-        ventana.setVisible(true);
-        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
+    
     
     //  -- Accion de los botones --
     class accion implements ActionListener{
