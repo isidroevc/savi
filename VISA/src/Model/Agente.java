@@ -1,6 +1,14 @@
 package Model;
 
+import Controller.ControladorDB;
 import java.io.File;
+import Utilidades.Formatos;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,21 +26,14 @@ public class Agente extends Persona {
     }
     
     public Agente(int id,String nombre, String apellidoP, String apellidoM, 
-            String telefono, String celular, String direccion,Date fechaIngreso, 
-            Date fechaNacimiento,String password ){
-        super(nombre,apellidoP,apellidoM,celular,celular,direccion,fechaNacimiento);
+            long telefono, long celular, String direccion,Date fechaIngreso, 
+            Date fechaNacimiento,float salario,String password ){
+        super(nombre,apellidoP,apellidoM,telefono,celular,direccion,fechaNacimiento);
         this.id = id;
+        this.salario = salario;
         this.fechaIngreso = fechaIngreso;
-        this.fechaNacimiento = fechaNacimiento; 
         this.password = password;
         }
-    //Métodos de acceso
-    public void setId(int id){
-        this.id=id;
-    }
-    public int getId(){
-        return id;
-    }
     
     
     public void setFechaIngreso(Date fechaIngreso){
@@ -58,51 +59,47 @@ public class Agente extends Persona {
         return salario;
     }
     
+     // -Métodos varios
+     
+     @Override
+     public String toString(){
+         return   "id: " + Integer.toString(this.id) 
+                  + super.toString()
+                  + "\nfechaIngreso: " + Formatos.toDateMysql(this.fechaIngreso)
+                  + "\nsalario: " + Float.toString(this.salario);
+     }
     //-Métodos estáticos 
      
      //Método para buscar un agente por su id
      
      public static Agente buscarPorId(int id){
-         //
-         String[] registro = new String[0];
-         SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
-         boolean encontrado = false;
          try{
-            Scanner lector = new Scanner(new File("src/Resources/Agentes.txt"));
-            while(lector.hasNextLine()){
-                registro = lector.nextLine().split(",");
-                //Si el id es igual al id solicitado
-                if(registro[0].trim().equals(Integer.toString(id))){
-                    encontrado = true;
-                    break;
-                }
-            }
-            //Cerrar el flujo del archivo
-            lector.close();
-         }catch(Exception ex){
+             Connection conexion = ControladorDB.getConexion();
+             PreparedStatement consulta = conexion.prepareStatement(
+                                          "SELECT * FROM Agente WHERE id = ?");
+             ResultSet resultados;
+             consulta.setInt(1, id);
              
-         }
-         //Si si se encontró
-         if(encontrado){
-             Agente buscado;
-             try{
-                buscado = new Agente(Integer.parseInt(registro[0].trim()),//id
-                                            registro[1].trim(),//nombre
-                                            registro[2].trim(),//paterno
-                                            registro[3].trim(),//materno
-                                            registro[4].trim(),//telefono
-                                            registro[5].trim(),//celular
-                                            registro[6].trim(),//direccion
-                                            format.parse(registro[7].trim()),
-                                            format.parse(registro[8].trim()),
-                                            registro[9].trim()//password
-                                        );
-             }catch(Exception ex){
-                 System.out.println(ex.getMessage());
+             resultados = consulta.executeQuery();
+             
+             if(resultados.next()){
+                 return new Agente(id,
+                                   resultados.getString("nombres"),
+                                   resultados.getString("apellidoP"),
+                                   resultados.getString("apellidoM"),
+                                   resultados.getLong("telefono"),
+                                   resultados.getLong("celular"),
+                                   resultados.getString("direccion"),
+                                   Formatos.toDate(resultados.getString("fechaIngreso")),
+                                   Formatos.toDate(resultados.getString("fechaNacimiento")),
+                                   resultados.getFloat("salario"),
+                                   resultados.getString("password"));
+             }else{
                  return null;
              }
-            return buscado;
+         }catch(Exception ex){
+             //TODO: Controlar exceptiones
+             return null;
          }
-         return null;
      }
 }

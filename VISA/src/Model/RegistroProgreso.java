@@ -1,8 +1,9 @@
 package Model;
 
 public class RegistroProgreso {
-    private int     idExpediente,
-                    id;
+    private int     id,
+                    idExpediente;    
+                    
     private String  titulo,
                     descripcion,
                     fecha;

@@ -1,5 +1,7 @@
 package Model;
 
+import java.text.SimpleDateFormat;
+import Utilidades.Formatos;
 import java.util.Date;
 
 public class Persona {
@@ -7,12 +9,13 @@ public class Persona {
     protected String    nombres,
                         apellidoP,
                         apellidoM,
-                        telefono,
-                        celular,
                         direccion;
+    
+    private long telefono,
+                 celular;
     protected int id;
     protected Date fechaNacimiento;
-    public Persona(String nombres, String apellidoP, String apellidoM, String telefono, String celular, String direccion, Date fechaNacimiento){
+    public Persona(String nombres, String apellidoP, String apellidoM, long telefono, long celular, String direccion, Date fechaNacimiento){
         this.nombres=nombres;
         this.apellidoP=apellidoP;
         this.apellidoM=apellidoM;
@@ -45,11 +48,11 @@ public class Persona {
         return apellidoM;
     }
 
-    public String getTelefono() {
+    public long getTelefono() {
         return telefono;
     }
 
-    public String getCelular() {
+    public long getCelular() {
         return celular;
     }
 
@@ -69,17 +72,28 @@ public class Persona {
         this.apellidoM = apellidoM;
     }
 
-    public void setTelefono(String telefono) {
+    public void setTelefono(long telefono) {
         this.telefono = telefono;
     }
 
-    public void setCelular(String celular) {
+    public void setCelular(long celular) {
         this.celular = celular;
     }
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
-    
+    // -Métodos
+    @Override
+    public String toString(){
+        return    "nombres: "         + this.nombres
+                + "\napellidoP: "       + this.apellidoP
+                + "\napellidoM: "       + this.apellidoM
+                + "\ntelefono: "        + Long.toString(this.telefono)
+                + "\ncelular: "         + Long.toString(this.celular)
+                + "\ndireccion: "       + this.direccion
+                + "\nfechaNacimiento: " + Formatos.toDateMysql(this.fechaNacimiento);
+                
+    }
     
 }

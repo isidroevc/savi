@@ -9,7 +9,7 @@ public class AgenteTest {
 
     public static void main(String[] args) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
-        Agente a = Agente.buscarPorId(4);
+        Agente a = Agente.buscarPorId(2);
         System.out.println(format.format(a.getFechaNacimiento()));
     }
     

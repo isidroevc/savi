@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
- public class DatabaseController {
+ public class ControladorDB {
     public static Connection getConexion(){
         //primero hay que verificar que si esta el controlador de la base de datos
         Connection connection = null;
@@ -18,7 +18,7 @@ import java.util.Date;
 	}
 	try {
 		connection = DriverManager
-		.getConnection("jdbc:mysql://localhost:3306/mydb","root", "");
+		.getConnection("jdbc:mysql://localhost:3306/agencia","root", "");
 
 	} catch (SQLException e) {
 		return null;

@@ -4,7 +4,8 @@ import java.util.Date;
 
 public class Expediente {
     private int     id,
-                    idAcreedor;
+                    idAcreedor,
+                    idAgente;
     private Date    fechaInicio,
                     fechaFin;
     private boolean finalizado;
@@ -17,6 +18,14 @@ public class Expediente {
         this.idAcreedor = idAcreedor;
     }
 
+    public int getIdAgente() {
+        return idAgente;
+    }
+
+    public void setIdAgente(int idAgente) {
+        this.idAgente = idAgente;
+    }
+    
     
     public int getId() {
         return id;
