@@ -58,6 +58,14 @@ public class Agente extends Persona {
      public float getSalario() {
         return salario;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
     
      // -Métodos varios
      
