@@ -7,9 +7,8 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class Agente extends Persona {
-    private int id;
+    // -Atributos
     private Date fechaIngreso;
-    private Date fechaNacimiento;
     private float salario;
     private String password;
     
@@ -21,7 +20,7 @@ public class Agente extends Persona {
     public Agente(int id,String nombre, String apellidoP, String apellidoM, 
             String telefono, String celular, String direccion,Date fechaIngreso, 
             Date fechaNacimiento,String password ){
-        super(nombre,apellidoP,apellidoM,celular,celular,direccion);
+        super(nombre,apellidoP,apellidoM,celular,celular,direccion,fechaNacimiento);
         this.id = id;
         this.fechaIngreso = fechaIngreso;
         this.fechaNacimiento = fechaNacimiento; 

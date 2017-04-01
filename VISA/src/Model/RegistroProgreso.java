@@ -1,6 +1,6 @@
 package Model;
 
-public class Progreso {
+public class RegistroProgreso {
     private int     idExpediente,
                     id;
     private String  titulo,

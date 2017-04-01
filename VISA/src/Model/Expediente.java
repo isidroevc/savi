@@ -3,8 +3,8 @@ package Model;
 import java.util.Date;
 
 public class Expediente {
-    private int     idAcreedor,
-                    id;
+    private int     id,
+                    idAcreedor;
     private Date    fechaInicio,
                     fechaFin;
     private boolean finalizado;

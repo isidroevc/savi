@@ -1,27 +1,40 @@
 package Model;
 
+import java.util.Date;
+
 public class Persona {
-    protected String    nombre,
+    // -Atributos
+    protected String    nombres,
                         apellidoP,
                         apellidoM,
                         telefono,
                         celular,
                         direccion;
-
-    public Persona(String nombre, String apellidoP, String apellidoM, String telefono, String celular, String direccion){
-        this.nombre=nombre;
+    protected int id;
+    protected Date fechaNacimiento;
+    public Persona(String nombres, String apellidoP, String apellidoM, String telefono, String celular, String direccion, Date fechaNacimiento){
+        this.nombres=nombres;
         this.apellidoP=apellidoP;
         this.apellidoM=apellidoM;
         this.telefono=telefono;
         this.celular=celular;
         this.direccion=direccion;
+        this.fechaNacimiento = fechaNacimiento;
     }
     public Persona(){
     
     }
 
-    public String getNombre() {
-        return nombre;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public String getNombres() {
+        return nombres;
     }
 
     public String getApellidoP() {
@@ -44,8 +57,8 @@ public class Persona {
         return direccion;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombres(String nombre) {
+        this.nombres = nombres;
     }
 
     public void setApellidoP(String apellidoP) {

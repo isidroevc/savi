@@ -7,18 +7,15 @@ import java.util.Scanner;
 
 public class Acreedor extends Persona{
     private int idRepresentante;
-    private int id;
-    private Date fechaAlta,
-                 fechaNacimiento;
+    private Date fechaAlta;
     //Constructores 
     public Acreedor(int id, int idReprensentsnte,String nombre, String apellidoP, 
         String apellidoM, String telefono, String celular, String direccion,
         Date fechaAlta,Date fechaNacimiento){
-        super(nombre,apellidoP,apellidoM,celular,celular,direccion);
+        super(nombre,apellidoP,apellidoM,celular,celular,direccion,fechaNacimiento);
         this.id = id;
         this.idRepresentante = idRepresentante;
         this.fechaAlta = fechaAlta;
-        this.fechaNacimiento = fechaNacimiento;
     }
     public void setId(int id){
         this.id=id;
