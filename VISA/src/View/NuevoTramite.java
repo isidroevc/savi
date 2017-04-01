@@ -11,14 +11,20 @@
 package View;
 
 import Controller.Controller;
-
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.web.WebView;
 public class NuevoTramite extends View {
-
-    //-Métodos Constructores
+    // -Atributos
+    JFXPanel c;
+    // -Métodos Constructores
     //Constructor sin parámetros
     public NuevoTramite(){
-        
+        crear();
     }
+    
+    
     // -Métodos específicos de funcionamiento
     
     @Override
@@ -28,12 +34,22 @@ public class NuevoTramite extends View {
 
     @Override
     protected void crear() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        c = new JFXPanel();
+        c.setSize(640,480);
+        Platform.runLater(() -> {
+        WebView webView = new WebView();
+        c.setScene(new Scene(webView));
+        webView.getEngine().load("http://www.stackoverflow.com/");
+        this.setLayout(null);
+        this.setSize(640,480);
+        c.setBounds(0,0,640,480);
+        this.add(c);
+});
     }
 
     @Override
     protected void armar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.setVisible(true);
     }
     
 }

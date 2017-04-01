@@ -11,13 +11,16 @@ package Test;
 
 import Controller.ControladorLogin;
 import View.Login;
+import View.NuevoTramite;
 
 public class TestControladorLogin {
 
     public static void main(String[] args) {
-        ControladorLogin controlador = new ControladorLogin();
+        /*ControladorLogin controlador = new ControladorLogin();
         controlador.conectarVista(new Login());
-        controlador.correr();
+        controlador.correr();*/
+        
+        new NuevoTramite().mostrar();
     }
     
 }
