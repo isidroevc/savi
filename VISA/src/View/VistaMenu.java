@@ -1,7 +1,6 @@
 package View;
 
 
-import Controller.ControladorLogin;
 import Controller.Controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,7 +28,7 @@ public class VistaMenu extends View{
         
     }
     public void conectarControlador(Controller c){
-        this.controlador = (ControladorLogin)c;
+        this.controlador = (ControladorMenu)c;
     }
         
     @Override
