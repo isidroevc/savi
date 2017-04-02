@@ -1,11 +1,8 @@
 
 package Test;
 
-import java.sql.Connection;
-import Controller.ControladorDB;
+
 import Model.Agente;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 public class TestConexion {
 
