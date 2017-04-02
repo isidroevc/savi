@@ -20,7 +20,7 @@ public class VistaMenu extends View{
     private JButton salir;
     private String path="src/Imagenes/";
     
-    private ControladorMenu controlador;
+    //private ControladorMenu controlador;
     
     public VistaMenu(){
         crear();
@@ -28,7 +28,7 @@ public class VistaMenu extends View{
         
     }
     public void conectarControlador(Controller c){
-        this.controlador = (ControladorMenu)c;
+        //this.controlador = (ControladorMenu)c;
     }
         
     @Override
