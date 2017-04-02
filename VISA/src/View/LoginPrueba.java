@@ -8,7 +8,9 @@ public class LoginPrueba {
         //Login correr= new Login();
         VistaMenu corre=new VistaMenu();
         
-        corre.show();
-    }
+        
+        
+        corre.show();    
+                }
     
 }
