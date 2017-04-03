@@ -10,7 +10,10 @@
  */
 package View;
 
+import Controller.ControladorNuevoTramite;
 import Controller.Controller;
+import Model.Representante;
+import Utilidades.Formatos;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,26 +21,36 @@ import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.web.WebView;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 public class NuevoTramite extends View {
     // -Atributos
-    JFXPanel c;
-    JPanel panelA,
-           panelB;
-    
-    JLabel aNom,
+    private int activo = 0;
+    private static String[] documentos = {"Acta de nacimiento",
+                            "Pasaporte Válido",
+                            "Identificacion",
+                            "Comprobante de estudios",
+                            "Visas anteriores"};
+    private JCheckBox[] checDocumentos;
+    private JPanel panelA,
+           panelB,panelC;
+    private JRadioButton nuevoRep,repAcreedor, yaRegistrado;
+    private ButtonGroup grupoRep, grupoDocumentos;
+    private JLabel aNom,
            aApellidoP,
            aApellidoM,
            aDireccion,
            aTelefono,
            aCelular,
            aFechaN,
-           aFechaAlta,
            bNom,
            bApellidoP,
            bApellidoM,
@@ -45,30 +58,35 @@ public class NuevoTramite extends View {
            bTelefono,
            bCelular,
            bFechaN, 
-           fondo;
+           fondo,labelIdRep;
     
-    JTextField aNom1,
+    private JTextField aNom1,
                aApellidoP1,
                aApellidoM1,
                aDireccion1,
                aTelefono1,
                aCelular1,
                aFechaN1,
-               aFechaAlta1,
                bNom1,
                bApellidoP1,
                bApellidoM1,
                bDireccion1,
                bTelefono1,
                bCelular1,
-               bFechaN1; 
+               bFechaN1,
+               idRepresentante; 
     JButton siguiente,
-            anterior;
+            anterior,anterior2, siguiente2, finalizar,buscar;
+    
+    
+    private ControladorNuevoTramite controlador;
     private String path="src/Imagenes/";
     // -Métodos Constructores
     //Constructor sin parámetros
     public NuevoTramite(){
         crear();
+        armar();
+        mostrar();
     }
     
     
@@ -76,24 +94,16 @@ public class NuevoTramite extends View {
     
     @Override
     public void conectarControlador(Controller c) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.controlador = (ControladorNuevoTramite)c;
     }
 
     @Override
     protected void crear() {
-        c = new JFXPanel();
-        c.setSize(640,480);
-        Platform.runLater(() -> {
-        WebView webView = new WebView();
-        c.setScene(new Scene(webView));
-        webView.getEngine().load("http://www.stackoverflow.com/");
-        this.setLayout(null);
-        this.setSize(640,480);
-        c.setBounds(0,0,640,480);
-        this.add(c);
-        
         //Apartir de aqui es lo que hice yo 
-        
+        checDocumentos = new JCheckBox[documentos.length];
+        for(int i = 0; i < documentos.length; i++){
+            checDocumentos[i] = new JCheckBox(documentos[i]);
+        }
         //Primer panel pertenece al Acreedor
         panelA = new JPanel();
         aNom = new JLabel("Nombre(s)");
@@ -103,7 +113,7 @@ public class NuevoTramite extends View {
         aTelefono = new JLabel("Numero de Telefono");
         aCelular = new JLabel("Numero de Celular");
         aFechaN = new JLabel("Fecha de Nacimiento");
-        aFechaAlta= new JLabel("Fecha del tramite");
+        labelIdRep = new JLabel("Id");
         
         aNom1 = new JTextField();
         aApellidoP1 = new JTextField();
@@ -112,7 +122,7 @@ public class NuevoTramite extends View {
         aTelefono1 = new JTextField();
         aCelular1 = new JTextField();
         aFechaN1 = new JTextField();
-        aFechaAlta1 = new JTextField();
+        
         
         //Segundo Panel
         panelB = new JPanel();
@@ -131,17 +141,29 @@ public class NuevoTramite extends View {
         bTelefono1 = new JTextField();
         bCelular1 = new JTextField();
         bFechaN1 = new JTextField();
+        idRepresentante = new JTextField();
         
         fondo= new JLabel();
         siguiente = new JButton("siguiente");
         anterior = new JButton ("anterior");
-});
+        siguiente2 = new JButton("siguiente");
+        anterior2 = new JButton ("anterior");
+        finalizar = new JButton("Finalizar");
+        buscar = new JButton("Buscar");
+        
+        repAcreedor = new JRadioButton("Sin representante");
+        yaRegistrado = new JRadioButton("Representante ya regstrado");
+        nuevoRep = new JRadioButton("Nuevo representante");
+        panelC = new JPanel();
+        
+        grupoRep = new ButtonGroup();
     }
 
     @Override
     protected void armar() {
+        super.armar();
         this.setTitle("Nuevo tramite");
-        this.setSize(500,500);
+        this.setSize(700,500);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
@@ -149,7 +171,7 @@ public class NuevoTramite extends View {
         //Apartir de aqui es lo que hice yo 
         panelA.setLayout(null);
         panelB.setLayout(null);
-        
+        panelC.setLayout(null);
         fondo.setIcon(new ImageIcon(path+"Nombre de la imagen"));   //Fondo del menu
         fondo.setBounds(0, 0, 1000,1000);
         
@@ -182,12 +204,31 @@ public class NuevoTramite extends View {
         aFechaN.setFont(new Font("Arial",1,15));
         aFechaN1.setBounds(170, 250, 200, 30);
         
-        aFechaAlta.setBounds(10, 290,150, 30);
-        aFechaAlta.setFont(new Font("Arial",1,15));
-        aFechaAlta1.setBounds(170, 290, 200, 30);
-        
         siguiente.setBounds(370, 400,100, 30);
-        siguiente.addActionListener(new accion());
+        siguiente.addActionListener(new SiguienteClick());
+        
+        siguiente2.setBounds(370, 400,100, 30);
+        siguiente2.addActionListener(new SiguienteClick());
+        
+        finalizar.setBounds(370, 400,100, 30);
+        finalizar.addActionListener(new SiguienteClick());
+        
+        nuevoRep.setBounds(410,10,200,30);
+        nuevoRep.addActionListener(new NuevoRepresentanteClick());
+        repAcreedor.setBounds(410,40,200,30);
+        repAcreedor.addActionListener(new SinRepresentanteClick());
+        
+        yaRegistrado.setBounds(410,70,200,30);
+        
+        yaRegistrado.addActionListener(new YaRegistradoClick());
+        
+        labelIdRep.setBounds(410,100,50,30);
+        idRepresentante.setBounds(440,100,50,30);
+        buscar.setBounds(490,100,100,30);
+        
+        grupoRep.add(nuevoRep);
+        grupoRep.add(repAcreedor);
+        grupoRep.add(yaRegistrado);
         
         panelA.add(aNom);
         panelA.add(aNom1);
@@ -203,8 +244,6 @@ public class NuevoTramite extends View {
         panelA.add(aCelular1);
         panelA.add(aFechaN);
         panelA.add(aFechaN1);
-        panelA.add(aFechaAlta);
-        panelA.add(aFechaAlta1);
         panelA.add(siguiente);
         
         //Elementos del segundo panel pertenecientes al representante 
@@ -237,7 +276,17 @@ public class NuevoTramite extends View {
         bFechaN1.setBounds(170, 250, 200, 30);
         
         anterior.setBounds(10, 400, 100, 30);
-        anterior.addActionListener(new accion());
+        anterior.addActionListener(new AnteriorClick());
+        
+        anterior2.setBounds(10, 400, 100, 30);
+        anterior2.addActionListener(new AnteriorClick());
+        
+        panelC.setLayout(null);
+        
+        for(int i =0; i < documentos.length; i++){
+            checDocumentos[i].setBounds(50, 100 + i*50, 200, 30);
+            panelC.add(checDocumentos[i]);
+        }
         
         panelB.add(bNom);
         panelB.add(bNom1);
@@ -254,13 +303,163 @@ public class NuevoTramite extends View {
         panelB.add(bFechaN);
         panelB.add(bFechaN1);
         panelB.add(anterior);
+        panelB.add(siguiente2);
+        panelB.add(yaRegistrado);
+        panelB.add(nuevoRep);
+        panelB.add(repAcreedor);
+        panelB.add(buscar);
+        panelB.add(labelIdRep);
+        panelB.add(idRepresentante);
+        
+        buscar.addActionListener(new BuscarClick());
+        nuevoRep.setSelected(true);
+        
+        finalizar.setBounds(370, 400,100, 30);
+        finalizar.addActionListener(new FinalizarClick());
+        
+        siguiente2.addActionListener(new Siguiente2Click());
+        
+        panelC.add(finalizar);
+     
+        this.irADatosAcreedor();
+        setEstadoNuevoRep(true);
+    }
+    public void irADatosAcreedor(){
+       this.setTitle("Nuevo Tramite - Datos del acreedor");
+       this.setContentPane(panelA);
+       JPanel p = (JPanel)this.getContentPane();
+       p.revalidate();
+       p.repaint();
+    }
+    public void irADatosRepresentante(){
+        this.setTitle("Nuevo Tramite - Datos del representante");
+       this.setContentPane(panelB);
+       JPanel p = (JPanel)this.getContentPane();
+       p.revalidate();
+       p.repaint();
     }
     
-    public class accion implements ActionListener{
+    public void irADocumentos(){
+       this.setTitle("Nuevo Tramite - Documentos a entregar");
+       this.setContentPane(panelA);
+       JPanel p = (JPanel)this.getContentPane();
+       p.revalidate();
+       p.repaint();
+    }
+    
+    public void setEstadoNuevoRep(boolean estado){
+        bNom1.setEnabled(estado);
+        bApellidoP1.setEnabled(estado);
+        bApellidoM1.setEnabled(estado);
+        bDireccion1.setEnabled(estado);
+        bTelefono1.setEnabled(estado);
+        bCelular1.setEditable(estado);
+        bFechaN1.setEnabled(estado);
+        
+        bNom.setEnabled(estado);
+        bApellidoP.setEnabled(estado);
+        bApellidoM.setEnabled(estado);
+        bDireccion.setEnabled(estado);
+        bTelefono.setEnabled(estado);
+        bCelular.setEnabled(estado);
+        bFechaN.setEnabled(estado);
+        if(activo == 2)
+            setEstadoYaRegistrado(false);
+        activo =0;
+    }
+    public void setEstadoYaRegistrado(boolean estado){
+        labelIdRep.setEnabled(estado);
+        buscar.setEnabled(estado);
+        idRepresentante.setEnabled(estado);
+        if(activo == 0)
+            setEstadoNuevoRep(false);
+        
+        activo = 2;
+    }
+    public void setEstadoSinRepresentante(boolean estado){
+        if(activo == 2)
+            setEstadoYaRegistrado(false);
+        else
+            setEstadoNuevoRep(false);
+    }
+    
+    public void llenarDatos(Representante rep){
+        bNom1.setText(rep.getNombres());
+        bApellidoP1.setText(rep.getApellidoP());
+        bApellidoM1.setText(rep.getApellidoM());
+        bDireccion1.setText(rep.getDireccion());
+        bTelefono1.setText(Long.toString(rep.getTelefono()));
+        bCelular1.setText(Long.toString(rep.getCelular()));
+        bFechaN1.setText(Formatos.toDateMysql(rep.getFechaNacimiento()));
+    }
+    
+    public class SiguienteClick implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
-            
+            controlador.manejarSiguienteAcreedor(aNom1.getText(), aApellidoP1.getText(),
+                                        aApellidoM1.getText(),
+                                        aDireccion1.getText(),aTelefono1.getText(),
+                                        aCelular1.getText(),aFechaN1.getText());
+        }
+    }
+    public class AnteriorClick implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            controlador.manejarAnteriorRepresentante();
         }
     }
     
+   public class NuevoRepresentanteClick implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            JRadioButton r  =  (JRadioButton)e.getSource();
+            controlador.manejarRadio(0,r.isSelected());
+        }
+    }
+    public class YaRegistradoClick implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            JRadioButton r  =  (JRadioButton)e.getSource();
+            controlador.manejarRadio(1,r.isSelected());
+        }
+    }
+    public class SinRepresentanteClick implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            JRadioButton r  =  (JRadioButton)e.getSource();
+            controlador.manejarRadio(2,r.isSelected());
+        }
+    }
+    
+    public class BuscarClick implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            controlador.manejarBuscar(idRepresentante.getText());
+        }
+    }
+    
+    public class FinalizarClick implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            boolean[] estados = new boolean[checDocumentos.length];
+            for(int i =0; i < estados.length; i++){
+                estados[i] = checDocumentos[i].isSelected();
+            }
+            controlador.manejarFinalizar(estados);
+            
+        }
+     
+    }
+    
+    public class Siguiente2Click implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            /*controlador.manejarRepresentanteSiguiente(activo,bNom1.getText(), bApellidoP1.getText(),
+                                        bApellidoM1.getText(),
+                                        bDireccion1.getText(),bTelefono1.getText(),
+                                        bCelular1.getText(),bFechaN1.getText());*/
+            //System.out.println("Cochorroool");
+            irADocumentos();
+        }
+    }
 }

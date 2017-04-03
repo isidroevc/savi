@@ -23,7 +23,12 @@ public abstract class View extends JFrame{
     
     public abstract void conectarControlador(Controller c);
     protected abstract void crear();
-    protected abstract void armar();
+    protected  void armar(){
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false);
+        this.setLayout(null);
+    }
+    
     public void mostrar(){
         this.setVisible(true);
     }

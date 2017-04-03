@@ -95,5 +95,13 @@ public class Persona {
                 + "\nfechaNacimiento: " + Formatos.toDateMysql(this.fechaNacimiento);
                 
     }
+
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
     
 }
