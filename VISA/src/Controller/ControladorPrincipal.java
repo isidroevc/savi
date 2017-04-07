@@ -7,6 +7,7 @@ import Model.Agente;
 import View.Login;
 import View.Menu;
 import View.NuevoTramite;
+import View.SeguirTramite;
 import View.View;
 
 public class ControladorPrincipal {
@@ -14,6 +15,7 @@ public class ControladorPrincipal {
     private ControladorLogin login;
     private ControladorMenu menu;
     private ControladorNuevoTramite tramite;
+    private ControladorSeguir seguir;
     public ControladorPrincipal(){
         
     }
@@ -52,7 +54,9 @@ public class ControladorPrincipal {
     }
     
     public void irASeguirTramite(){
-        
+        seguir = new ControladorSeguir();
+        seguir.conectarVista(new SeguirTramite());
+        seguir.correr(this);
     }
     
     public void manejarNuevo(){

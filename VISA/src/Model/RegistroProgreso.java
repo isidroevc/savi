@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class RegistroProgreso {
@@ -97,7 +98,7 @@ public class RegistroProgreso {
             Connection conexion = ControladorDB.getConexion();
             ResultSet resultados;
             PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM RegistroProgreso "
-            + "WHERE id = ?",Statement.RETURN_GENERATED_KEYS);
+            + "WHERE id = ? ",Statement.RETURN_GENERATED_KEYS);
             
             consulta.setInt(1, id);
             
@@ -107,7 +108,34 @@ public class RegistroProgreso {
                                                 resultados.getString("titulo"),
                                                 resultados.getString("descripcion"),
                                                 Formatos.toDateTime(resultados.getString("fecha")));
-                registro.setId(resultados.getInt("id"));
+                
+            }
+            else
+                registro = null;
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+            registro = null;
+        }
+        return registro;
+    }
+    
+    public static ArrayList<RegistroProgreso> buscarPorExpediente(int idExpediente){
+        ArrayList<RegistroProgreso> registro = new ArrayList<RegistroProgreso>();
+        try{
+            Connection conexion = ControladorDB.getConexion();
+            ResultSet resultados;
+            PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM RegistroProgreso "
+            + "WHERE idexpediente = ? ORDER BY fecha ASC",Statement.RETURN_GENERATED_KEYS);
+            
+            consulta.setInt(1, idExpediente);
+            
+            resultados = consulta.executeQuery();
+            if(resultados.next()){
+                registro.add(new RegistroProgreso(resultados.getInt("idExpediente"),
+                                                resultados.getString("titulo"),
+                                                resultados.getString("descripcion"),
+                                                Formatos.toDateTime(resultados.getString("fecha"))));
+  
             }
             else
                 registro = null;
