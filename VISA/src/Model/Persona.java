@@ -60,7 +60,7 @@ public class Persona {
         return direccion;
     }
 
-    public void setNombres(String nombre) {
+    public void setNombres(String nombres) {
         this.nombres = nombres;
     }
 

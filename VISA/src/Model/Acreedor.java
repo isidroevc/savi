@@ -6,8 +6,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 import Utilidades.Formatos;
+import com.mysql.jdbc.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Calendar;
 public class Acreedor extends Persona{
     private int idRepresentante;
@@ -20,6 +22,9 @@ public class Acreedor extends Persona{
         this.id = id;
         this.idRepresentante = idRepresentante;
         this.fechaAlta = fechaAlta;
+    }
+    public Acreedor(){
+        
     }
     public Acreedor(String nombre, String apellidoP, 
         String apellidoM, long telefono, long celular, String direccion,
@@ -35,6 +40,15 @@ public class Acreedor extends Persona{
         return idRepresentante;
     }
 
+    public void setFechaAlta(Date fechaAlta) {
+        this.fechaAlta = fechaAlta;
+    }
+
+    public Date getFechaAlta() {
+        return fechaAlta;
+    }
+    
+
     @Override
     public String toString(){
         return  "id: " + this.id + "\nidRepresentante: \n" + super.toString()
@@ -49,8 +63,8 @@ public class Acreedor extends Persona{
         try{
              Connection conexion = ControladorDB.getConexion();
              PreparedStatement consulta = conexion.prepareStatement(
-             "INSERT INTO Representante (nombres,apellidoP,apellidM,telefono,celular,direccion,fechaNacimiento,fechaAlta)"
-             +" VALUES(?,?,?,?,?,?,?,?)");
+             "INSERT INTO Acreedor (nombres,apellidoP,apellidoM,telefono,celular,direccion,fechaNacimiento,fechaAlta,idRepresentante)"
+             +" VALUES(?,?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
              
              consulta.setString(1, r.getNombres());
              consulta.setString(2, r.getApellidoP());
@@ -59,10 +73,15 @@ public class Acreedor extends Persona{
              consulta.setLong(5, r.getTelefono());
              consulta.setString(6, r.getDireccion());
              consulta.setString(7,Formatos.toDateMysql(r.getFechaNacimiento()));
-             consulta.setString(8, Formatos.toDateMysql(new Date()));
-             consulta.executeUpdate();
+             r.setFechaAlta(new Date());
              
-             r.setId(consulta.getGeneratedKeys().getInt("id"));
+             consulta.setString(8, Formatos.toDateMysql(r.getFechaAlta()));
+             consulta.setInt(9, 1);
+             consulta.executeUpdate();
+             ResultSet set = consulta.getGeneratedKeys();
+             if(set.next())
+                r.setId(set.getInt(1));//le ponemos el id que genero mysql
+             System.out.println(r.getId());
              return true;
              
          }catch(Exception ex){

@@ -129,6 +129,7 @@ public class VistaMenu extends View{
       panel.add(seguimiento);
       panel.add(salir);
       panel.add(fondo);
+      this.setContentPane(panel);
     }
     
     
