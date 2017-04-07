@@ -23,6 +23,13 @@ public class RegistroProgreso {
         this.descripcion = descripcion;
         this.fecha = fecha;
     }
+    
+    public RegistroProgreso(String titulo, String descripcion, Date fecha){
+        this.idExpediente = idExpediente;
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.fecha = fecha;
+    }
     public void setIdExpediente(int idExpediente) {
         this.idExpediente = idExpediente;
     }
@@ -125,24 +132,25 @@ public class RegistroProgreso {
             Connection conexion = ControladorDB.getConexion();
             ResultSet resultados;
             PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM RegistroProgreso "
-            + "WHERE idexpediente = ? ORDER BY fecha ASC",Statement.RETURN_GENERATED_KEYS);
+            + "WHERE idExpediente = ? ORDER BY fecha ASC",Statement.RETURN_GENERATED_KEYS);
             
             consulta.setInt(1, idExpediente);
             
             resultados = consulta.executeQuery();
-            if(resultados.next()){
+            while(resultados.next()){
                 registro.add(new RegistroProgreso(resultados.getInt("idExpediente"),
                                                 resultados.getString("titulo"),
                                                 resultados.getString("descripcion"),
                                                 Formatos.toDateTime(resultados.getString("fecha"))));
   
             }
-            else
+            if (registro.size() == 0)
                 registro = null;
         }catch(Exception ex){
             System.out.println(ex.getMessage());
             registro = null;
         }
+        System.out.println(registro.size());
         return registro;
     }
 }

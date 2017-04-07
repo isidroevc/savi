@@ -154,7 +154,7 @@ public class SeguirTramite extends View {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            controlador.manejarBuscar(campo1.getText());
+            controlador.manejarRegistrar(campo1.getText(),"campo1.getText()",campo1.getText());
         }
     }
 
