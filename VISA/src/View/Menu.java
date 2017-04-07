@@ -43,8 +43,7 @@ public class Menu extends View{
       this.setTitle(null); //  -- Falta el titulo --
       this.setSize(500,500);
       this.setLocationRelativeTo(null);
-      this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-      this.setResizable(false);
+      
       
       panel.setLayout(null);
             
@@ -62,6 +61,11 @@ public class Menu extends View{
       salir.setBounds(380, 400, 100, 30);
       salir.setFont(new Font("Arial",0,15));
       salir.addActionListener(new Salir());
+      
+      panel.add(fondo);
+      panel.add(nuevo);
+      panel.add(seguir);
+      panel.add(salir);
     }
     
     //Accion de los botones
