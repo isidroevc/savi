@@ -57,11 +57,43 @@ public class Acreedor extends Persona{
     //Métodos estáticos de lectura de datos.
     
     public static Acreedor buscarPorId(int id){
-       return null;
+        try{
+             Connection conexion = ControladorDB.getConexion();
+             PreparedStatement consulta = conexion.prepareStatement(
+                                          "SELECT * FROM Acreedor WHERE id = ?");
+             ResultSet resultados;
+             consulta.setInt(1, id);
+             
+             resultados = consulta.executeQuery();
+             
+             if(resultados.next()){
+                 
+                consulta.close();
+                conexion.close();
+                 return new Acreedor (id,
+                                   resultados.getInt("idRepresentante"),
+                                   resultados.getString("nombres"),
+                                   resultados.getString("apellidoP"),
+                                   resultados.getString("apellidoM"),
+                                   resultados.getLong("telefono"),
+                                   resultados.getLong("celular"),
+                                   resultados.getString("direccion"),
+                                   Formatos.toDate(resultados.getString("fechaNacimiento")),
+                                   Formatos.toDate(resultados.getString("fechaAlta"))
+                                   );
+             }else{
+                 return null;
+             }
+         }catch(Exception ex){
+             //TODO: Controlar exceptiones
+             System.out.println(ex.getMessage());
+             return null;
+         }
      } 
     public static boolean registrar(Acreedor r){
         try{
              Connection conexion = ControladorDB.getConexion();
+             ResultSet llaves;
              PreparedStatement consulta = conexion.prepareStatement(
              "INSERT INTO Acreedor (nombres,apellidoP,apellidoM,telefono,celular,direccion,fechaNacimiento,fechaAlta,idRepresentante)"
              +" VALUES(?,?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
@@ -78,10 +110,12 @@ public class Acreedor extends Persona{
              consulta.setString(8, Formatos.toDateMysql(r.getFechaAlta()));
              consulta.setInt(9, 1);
              consulta.executeUpdate();
-             ResultSet set = consulta.getGeneratedKeys();
-             if(set.next())
-                r.setId(set.getInt(1));//le ponemos el id que genero mysql
-             System.out.println(r.getId());
+             llaves = consulta.getGeneratedKeys();
+             if(llaves.next())
+                r.setId(llaves.getInt(1));//le ponemos el id que genero mysql
+             llaves.close();
+             consulta.close();
+             conexion.close();
              return true;
              
          }catch(Exception ex){

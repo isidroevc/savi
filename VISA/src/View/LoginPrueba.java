@@ -3,13 +3,19 @@
 package View;
 
 import Model.Acreedor;
+import Model.Expediente;
+import Model.RegistroProgreso;
+import Model.Representante;
+import Utilidades.Formatos;
 import java.util.Date;
 
 public class LoginPrueba {
 
     public static void main(String[] args) {
         //Login correr= new Login();
-           Acreedor a  = new Acreedor();
+        /*Acreedor a = Acreedor.buscarPorId(11);
+        System.out.println(a.toString());
+           /*Acreedor a  = new Acreedor();
            a.setNombres("Registrado");
            a.setApellidoP("sigu");
            a.setApellidoM("nada");
@@ -18,7 +24,16 @@ public class LoginPrueba {
            a.setCelular(5564564);
            a.setFechaNacimiento(new Date());
            Acreedor.registrar(a);
-           System.out.println(a.toString());
+           System.out.println(a.toString());*/
+           //Representante r = Representante.buscarPorId(1);
+           //System.out.println(r.toString());
+           /*r.setNombres("Cristtobal Colon");
+           Representante.registrar(r);
+           System.out.println(r.toString() + "  id: " + r.getId());*/
+           /*Expediente ex = Expediente.buscarPorId(1);
+           System.out.println(ex.toString());*/
+           /*RegistroProgreso r = RegistroProgreso.buscarPorId(2);
+           System.out.println(r.getDescripcion());*/
         }
     
 }

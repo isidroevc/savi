@@ -49,7 +49,8 @@ public class Representante extends Persona{
              resultados = consulta.executeQuery();
              
              if(resultados.next()){
-                 System.out.println("Si hay resultados");
+                consulta.close();
+                conexion.close();
                  return new Representante(id,
                                    resultados.getString("nombres"),
                                    resultados.getString("apellidoP"),
@@ -72,9 +73,10 @@ public class Representante extends Persona{
     public static boolean registrar(Representante r){
         try{
              Connection conexion = ControladorDB.getConexion();
+             ResultSet llaves;
              PreparedStatement consulta = conexion.prepareStatement(
-             "INSERT INTO Representante (nombres,apellidoP,apellidM,telefono,celular,direccion,fechaNacimiento,tramitesEncurso)"
-             +" VALUES(?,?,?,?,?,?,?,?)");
+             "INSERT INTO Representante (nombres,apellidoP,apellidoM,telefono,celular,direccion,fechaNacimiento,tramitesEncurso)"
+             +" VALUES(?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
              
              consulta.setString(1, r.getNombres());
              consulta.setString(2, r.getApellidoP());
@@ -85,8 +87,12 @@ public class Representante extends Persona{
              consulta.setString(7,Formatos.toDateMysql(r.getFechaNacimiento()));
              consulta.setInt(8, 1);
              consulta.executeUpdate();
-             
-             r.setId(consulta.getGeneratedKeys().getInt("id"));
+             llaves = consulta.getGeneratedKeys();
+             if(llaves.next())
+                r.setId(llaves.getInt(1));
+             llaves.close();
+             consulta.close();
+             conexion.close();
              return true;
              
          }catch(Exception ex){
