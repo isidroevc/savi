@@ -10,6 +10,7 @@
 package Controller;
 
 import Model.Acreedor;
+import Model.Agente;
 import Model.Expediente;
 import Model.Representante;
 import Utilidades.Formatos;
@@ -27,6 +28,7 @@ public class ControladorNuevoTramite extends Controller {
     private Representante representante;
     private Expediente expediente;
     private boolean cargados;
+
     // -Constructores
     public ControladorNuevoTramite() {
         // -Metodos específicos de funcionamiento
@@ -39,7 +41,8 @@ public class ControladorNuevoTramite extends Controller {
     }
 
     @Override
-    public void correr() {
+    public void correr(ControladorPrincipal p) {
+        super.correr(p);
         nuevoTramite.mostrar();
     }
 
@@ -83,17 +86,19 @@ public class ControladorNuevoTramite extends Controller {
             }
         }
         if (valido) {
-            acreedor = new Acreedor(nombres,paterno,materno,
-                    Long.parseLong(telefono),Long.parseLong(celular),
+            acreedor = new Acreedor(nombres, paterno, materno,
+                    Long.parseLong(telefono), Long.parseLong(celular),
                     direccion,
-                    Calendar.getInstance().getTime(),Formatos.toDate(nacimiento));
+                    Calendar.getInstance().getTime(), Formatos.toDate(nacimiento));
             nuevoTramite.irADatosRepresentante();
-            }
-    
         }
+
+    }
+
     public void manejarAnteriorRepresentante() {
         nuevoTramite.irADatosAcreedor();
     }
+
     public void manejarRadio(int opcion, boolean estado) {
         switch (opcion) {
             case 0:
@@ -118,7 +123,7 @@ public class ControladorNuevoTramite extends Controller {
         if (!Validaciones.validarEntero(id)) {
             nuevoTramite.mandarMensaje("El id debe ser sólo numeros");
             return;
-        
+
         }
         representante = Representante.buscarPorId(Integer.parseInt(id));
         nuevoTramite.llenarDatos(representante);
@@ -128,8 +133,7 @@ public class ControladorNuevoTramite extends Controller {
     public void manejarRepresentanteSiguiente(int activo, String nombres, String paterno, String materno,
             String direccion, String telefono, String celular,
             String nacimiento) {
-        nuevoTramite.irADocumentos();
-        boolean valido = true;
+        boolean valido = true, finalizar = false;
         if (activo == 0) {
             if (!Validaciones.validarNombres(nombres)) {
                 nuevoTramite.mandarMensaje("El nombre es un campo obligatorio y debe contener solo letras");
@@ -172,53 +176,64 @@ public class ControladorNuevoTramite extends Controller {
                         direccion,
                         Calendar.getInstance().getTime(), Formatos.toDate(nacimiento));
                 System.out.println(acreedor.toString());
-                nuevoTramite.irADocumentos();
+                finalizar = true;
             }
-        }else if(activo == 1){
+        } else if (activo == 1) {
             representante = new Representante(acreedor.getNombres(),
-                                              acreedor.getApellidoP(),
-                                              acreedor.getApellidoM(),
-                                              acreedor.getTelefono(),
-                                              acreedor.getCelular(),
-                                              acreedor.getDireccion(),
-                                              acreedor.getFechaNacimiento());
-            nuevoTramite.irADocumentos();
-        }else{
-            if(!cargados){
+                    acreedor.getApellidoP(),
+                    acreedor.getApellidoM(),
+                    acreedor.getTelefono(),
+                    acreedor.getCelular(),
+                    acreedor.getDireccion(),
+                    acreedor.getFechaNacimiento());
+            finalizar = true;
+        } else {
+            if (!cargados) {
                 nuevoTramite.mandarMensaje("No ha seleccionado un id valido para el representante");
-                
+
             }
-            
+
+        }
+        if(finalizar){
+            finalizarTramite();
         }
     }
-    public void manejarFinalizar(boolean estados[] ){
-        boolean continuar= true;
-        for(int i = 0; i < estados.length; i++){
-            if(!estados[i])
-            {
-                continuar = false;
-                break;
-            }
+
+    public void finalizarTramite() {
+        boolean registrado = true;
+        Agente a;
+        if (!Representante.registrar(representante)) {
+            registrado = false;
+            nuevoTramite.mandarMensaje("Error registrando Representante");
         }
-        if(!continuar){
-            nuevoTramite.mandarMensaje("Se deben entregar todos los documentos");
-        }else{
-            //Proceder al registro
-            boolean registrado = true;
-            if(!Representante.registrar(representante)){
-                nuevoTramite.mandarMensaje("Error registrando representante");
-                registrado = false;
-            }
-            acreedor.setIdRepresentante(representante.getId());
-            if(!Acreedor.registrar(acreedor)){
-                nuevoTramite.mandarMensaje("Error registrando Acreedor");
-                registrado = false;
-            }
-            if(Expediente.registrar(expediente)){
-                nuevoTramite.mandarMensaje("Error creando expediente");
-                registrado = false;
-            }
-            nuevoTramite.mandarMensaje("Expediente abierto, datos registrados correctamente");
+        acreedor.setIdRepresentante(representante.getId());
+        if (!Acreedor.registrar(acreedor)) {
+            nuevoTramite.mandarMensaje("Error registrando Acreedor");
+            registrado = false;
         }
+        expediente = new Expediente();
+        expediente.setFechaInicio(new Date());
+        expediente.setIdAcreedor(acreedor.getId());
+        expediente.setIdAgente(p.getAgente().getId());
+        expediente.setFinalizado(false);
+        if (!Expediente.registrar(expediente)) {
+            nuevoTramite.mandarMensaje("Error creando expediente");
+            registrado = false;
+        }
+        a = p.getAgente();
+        nuevoTramite.mandarMensaje(("Expediente abierto, datos registrados correctamente"
+        + "\nDatos de expediente: \n" + expediente.toString() + "\n Datos acreedor: " + acreedor.toString()
+        + "\nDatos del representante: " + expediente.toString() + "\n El trámite será asistido por: "
+        + a.getNombres() + " " + a.getApellidoP() + " " + a.getApellidoM()).toUpperCase() );
+        p.manejarTramiteFinalizado();
+    }
+    
+    public void manejarCerrar(){
+        p.manejarNuevoTramiteCerrado();
+    }
+    
+    public void cerrar(){
+        nuevoTramite.setVisible(false);
+        nuevoTramite.dispose();
     }
 }

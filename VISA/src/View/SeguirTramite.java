@@ -16,7 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 
-public class VistaMenu extends View{
+public class SeguirTramite extends View{
     
     private JPanel panel;
     private JLabel fondo;
@@ -37,7 +37,7 @@ public class VistaMenu extends View{
     
     //private ControladorMenu controlador;
     
-    public VistaMenu(){
+    public SeguirTramite(){
         crear();
         armar();
         

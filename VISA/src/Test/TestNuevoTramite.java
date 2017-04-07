@@ -12,9 +12,9 @@ public class TestNuevoTramite {
 
 
     public static void main(String[] args) {
-        ControladorNuevoTramite c = new ControladorNuevoTramite();
+        /*ControladorNuevoTramite c = new ControladorNuevoTramite();
         c.conectarVista(new NuevoTramite());
-        c.correr();
+        c.correr();*/
         //System.out.println(Representante.buscarPorId(1).toString());
     }
     

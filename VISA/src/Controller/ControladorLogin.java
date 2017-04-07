@@ -57,7 +57,7 @@ public class ControladorLogin extends Controller{
             if(agente.getPassword().equals(pass)){
                 login.mandarMensaje("Bienvenido " + agente.getNombres());
                 //TODO: Hace que se abra el menú
-            
+                p.manejarIngreso(agente);
             }else{
                 login.mandarMensaje("ID o contraseña incorrectos, por favor verifique");
             }
@@ -66,8 +66,13 @@ public class ControladorLogin extends Controller{
             login.mandarMensaje("Agente no encontrado");
         }
     }
+    public void cerrar(){
+        this.login.setVisible(false);
+        this.login.dispose();
+    }
     @Override
-    public void correr(){
+    public void correr(ControladorPrincipal p){
+        super.correr(p);
         this.login.mostrar();
     }
 }

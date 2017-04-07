@@ -1,17 +1,20 @@
 package View;
 
+import Controller.ControladorMenu;
 import Controller.Controller;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
 public class Menu extends View{
     
+    private ControladorMenu controlador;
     private JPanel panel;
     private JLabel fondo;
     private JButton nuevo,
@@ -22,7 +25,7 @@ public class Menu extends View{
 
     @Override
     public void conectarControlador(Controller c) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.controlador = (ControladorMenu)c;
     }
     
     public Menu(){
@@ -44,7 +47,6 @@ public class Menu extends View{
       this.setSize(500,500);
       this.setLocationRelativeTo(null);
       
-      
       panel.setLayout(null);
             
       fondo.setIcon(new ImageIcon(path+"")); //-- Falta un fondo --
@@ -52,43 +54,44 @@ public class Menu extends View{
       
       nuevo.setBounds(20, 400, 100, 30);
       nuevo.setFont(new Font("Arial",0,15));
-      nuevo.addActionListener(new Nuevo());
+      nuevo.addActionListener(new NuevoClick());
       
       seguir.setBounds(200, 400, 100, 30);
       seguir.setFont(new Font("Arial",0,15));
-      seguir.addActionListener(new Seguir());
+      seguir.addActionListener(new SeguirClick());
       
       salir.setBounds(380, 400, 100, 30);
       salir.setFont(new Font("Arial",0,15));
-      salir.addActionListener(new Salir());
+      salir.addActionListener(new SalirClick());
       
       panel.add(fondo);
       panel.add(nuevo);
       panel.add(seguir);
       panel.add(salir);
+      this.setContentPane(panel);
     }
     
     //Accion de los botones
     
-    class Nuevo implements ActionListener{  //Boton para nuevo tramite
+    class NuevoClick implements ActionListener{  //Boton para nuevo tramite
         
         @Override
         public void actionPerformed(ActionEvent e) {
-            
+            controlador.manejarNuevo();
         }
     }
     
-    class Seguir implements ActionListener{ //Boton para seguir tramite
+    class SeguirClick implements ActionListener{ //Boton para seguir tramite
         @Override
         public void actionPerformed(ActionEvent e){
-        
+            controlador.manejarSeguir();
         }
     }
     
-    class Salir implements ActionListener{  //Boton para salir
+    class SalirClick implements ActionListener{  //Boton para salir
         @Override
         public void actionPerformed(ActionEvent e){
-        
+           controlador.manejarSalir();
         }
     }
     

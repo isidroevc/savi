@@ -34,6 +34,8 @@ public class LoginPrueba {
            System.out.println(ex.toString());*/
            /*RegistroProgreso r = RegistroProgreso.buscarPorId(2);
            System.out.println(r.getDescripcion());*/
+          Menu m = new Menu();
+          m.mostrar();
         }
     
 }

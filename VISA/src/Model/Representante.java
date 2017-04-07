@@ -39,6 +39,7 @@ public class Representante extends Persona{
     
     // -Metodos de bases de datos.
     public static Representante buscarPorId(int id){
+        Representante rep = null;
         try{
              Connection conexion = ControladorDB.getConexion();
              PreparedStatement consulta = conexion.prepareStatement(
@@ -49,9 +50,8 @@ public class Representante extends Persona{
              resultados = consulta.executeQuery();
              
              if(resultados.next()){
-                consulta.close();
-                conexion.close();
-                 return new Representante(id,
+                
+                 rep = new Representante(id,
                                    resultados.getString("nombres"),
                                    resultados.getString("apellidoP"),
                                    resultados.getString("apellidoM"),
@@ -61,14 +61,17 @@ public class Representante extends Persona{
                                    Formatos.toDate(resultados.getString("fechaNacimiento")),
                                    Integer.parseInt(resultados.getString("tramitesEnCurso"))
                                    );
+                 consulta.close();
+                conexion.close();
              }else{
-                 return null;
+                 rep = null;
              }
          }catch(Exception ex){
              //TODO: Controlar exceptiones
              System.out.println(ex.getMessage());
-             return null;
+             rep = null;
          }
+        return rep;
     }
     public static boolean registrar(Representante r){
         try{

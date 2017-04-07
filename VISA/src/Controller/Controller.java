@@ -14,8 +14,10 @@ import View.View;
 
 public abstract class Controller {
     // -Atributos
-    
+    ControladorPrincipal p;
     public abstract void conectarVista(View v);
     
-    public abstract void correr();
+    public void correr(ControladorPrincipal p){
+        this.p = p;
+    }
 }

@@ -2,12 +2,12 @@
  * 
  */
 package Test;
-import View.VistaMenu;
+import View.SeguirTramite;
 public class TestMenuPrincipal {
 
 
     public static void main(String[] args) {
-        VistaMenu v = new VistaMenu();
+        SeguirTramite v = new SeguirTramite();
         v.mostrar();
     }
     
