@@ -71,6 +71,10 @@ public class ControladorPrincipal {
         menu.cerrar();
         irALogin();
     }
+    public void manejarSSalir(){
+        seguir.cerrar();
+        irAMenu();
+    }
     
     public void manejarTramiteFinalizado(){
         tramite.cerrar();

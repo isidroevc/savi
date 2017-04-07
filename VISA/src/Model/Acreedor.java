@@ -57,7 +57,9 @@ public class Acreedor extends Persona{
     //Métodos estáticos de lectura de datos.
     
     public static Acreedor buscarPorId(int id){
+        Acreedor acreedor;
         try{
+            
              Connection conexion = ControladorDB.getConexion();
              PreparedStatement consulta = conexion.prepareStatement(
                                           "SELECT * FROM Acreedor WHERE id = ?");
@@ -67,10 +69,9 @@ public class Acreedor extends Persona{
              resultados = consulta.executeQuery();
              
              if(resultados.next()){
-                 
-                consulta.close();
-                conexion.close();
-                 return new Acreedor (id,
+                System.out.println("jejeje");
+                
+                 acreedor = new Acreedor (id,
                                    resultados.getInt("idRepresentante"),
                                    resultados.getString("nombres"),
                                    resultados.getString("apellidoP"),
@@ -81,6 +82,9 @@ public class Acreedor extends Persona{
                                    Formatos.toDate(resultados.getString("fechaNacimiento")),
                                    Formatos.toDate(resultados.getString("fechaAlta"))
                                    );
+                consulta.close();
+                conexion.close();
+                resultados.close();
              }else{
                  return null;
              }
@@ -89,6 +93,7 @@ public class Acreedor extends Persona{
              System.out.println(ex.getMessage());
              return null;
          }
+        return acreedor;
      } 
     public static boolean registrar(Acreedor r){
         try{
@@ -108,7 +113,7 @@ public class Acreedor extends Persona{
              r.setFechaAlta(new Date());
              
              consulta.setString(8, Formatos.toDateMysql(r.getFechaAlta()));
-             consulta.setInt(9, 1);
+             consulta.setInt(9, r.getIdRepresentante());
              consulta.executeUpdate();
              llaves = consulta.getGeneratedKeys();
              if(llaves.next())

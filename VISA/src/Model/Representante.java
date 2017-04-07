@@ -88,7 +88,7 @@ public class Representante extends Persona{
              consulta.setLong(5, r.getTelefono());
              consulta.setString(6, r.getDireccion());
              consulta.setString(7,Formatos.toDateMysql(r.getFechaNacimiento()));
-             consulta.setInt(8, 1);
+             consulta.setInt(8, r.getTramitesEnCurso() + 1);
              consulta.executeUpdate();
              llaves = consulta.getGeneratedKeys();
              if(llaves.next())

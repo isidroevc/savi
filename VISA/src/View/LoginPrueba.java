@@ -13,9 +13,10 @@ public class LoginPrueba {
 
     public static void main(String[] args) {
         //Login correr= new Login();
-        /*Acreedor a = Acreedor.buscarPorId(11);
-        System.out.println(a.toString());
-           /*Acreedor a  = new Acreedor();
+        //Acreedor a = Acreedor.buscarPorId(1);
+        //System.out.println(a.toString());
+           Acreedor a  = new Acreedor();
+           a.setIdRepresentante(2);
            a.setNombres("Registrado");
            a.setApellidoP("sigu");
            a.setApellidoM("nada");
@@ -23,8 +24,8 @@ public class LoginPrueba {
            a.setTelefono(446546);
            a.setCelular(5564564);
            a.setFechaNacimiento(new Date());
-           Acreedor.registrar(a);
-           System.out.println(a.toString());*/
+           System.out.println(Acreedor.registrar(a));
+           System.out.println(a.toString());
            //Representante r = Representante.buscarPorId(1);
            //System.out.println(r.toString());
            /*r.setNombres("Cristtobal Colon");
@@ -34,8 +35,9 @@ public class LoginPrueba {
            System.out.println(ex.toString());*/
            /*RegistroProgreso r = RegistroProgreso.buscarPorId(2);
            System.out.println(r.getDescripcion());*/
-          Menu m = new Menu();
-          m.mostrar();
+           
+          /*Menu m = new Menu();
+          m.mostrar();*/
         }
     
 }

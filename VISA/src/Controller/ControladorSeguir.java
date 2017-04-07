@@ -17,6 +17,7 @@ import java.util.Date;
 public class ControladorSeguir extends Controller {
 
     private SeguirTramite seguir;
+    
 
     @Override
     public void conectarVista(View v) {
@@ -66,6 +67,14 @@ public class ControladorSeguir extends Controller {
         else{
             seguir.mandarMensaje("Fallo en el registro");
         }
+    }
+    
+    public void manejarSalir(){
+        p.manejarSSalir();
+    }
+    public void cerrar(){
+        seguir.setVisible(false);
+        seguir.dispose();
     }
     
     private void cargarTabla(int id){

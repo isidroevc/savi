@@ -27,6 +27,7 @@ public class SeguirTramite extends View {
     private JTextField campo1;
     private JButton buscar;
     //segunda parte
+    private JTextField titulo;
     private JScrollPane barras;
     private TextArea campo2;
     private JButton registro;
@@ -61,6 +62,7 @@ public class SeguirTramite extends View {
         campo1 = new JTextField("");
         buscar = new JButton("Buscar");
         //Segunda parte
+        titulo = new JTextField("Seguir tramite");
         campo2 = new TextArea();
         registro = new JButton("registro");
         barras = new JScrollPane(campo2);
@@ -81,7 +83,7 @@ public class SeguirTramite extends View {
 
         panel.setLayout(null);
 
-        fondo.setIcon(new ImageIcon(path + "blue.jpg"));
+        fondo.setIcon(new ImageIcon(path + ""));
         fondo.setBounds(0, 0, 700, 500);
 
         //primera parte
@@ -98,10 +100,13 @@ public class SeguirTramite extends View {
         buscar.addActionListener(new BuscarClick());
 
         //Segunda parte
+        titulo.setFont(new Font(null,2, 15)); //-- Campo de texto 1--
+        titulo.setSelectionColor(Color.GRAY);
+        titulo.setBounds(15,50,150,30);
         barras.setViewportView(campo2);
 
         campo2.setEditable(true);     //Este es el JTextArea
-        campo2.setBounds(10, 60, 500, 200);
+        campo2.setBounds(10, 100, 500, 100);
         //campo2.setLineWrap(true);         // Para que haga el salto de línea en cualquier parte de la palabra
         //campo2.setWrapStyleWord(true);    // Para que haga el salto de línea buscando espacios entre las palabras
 
@@ -124,10 +129,11 @@ public class SeguirTramite extends View {
         panel.add(numExp);
         panel.add(campo1);
         panel.add(buscar);
+        panel.add(titulo);
         panel.add(campo2);
         panel.add(registro);
         panel.add(campo3);
-        panel.add(seguimiento);
+        //panel.add(seguimiento);
         panel.add(salir);
         panel.add(fondo);
         this.setContentPane(panel);
@@ -154,7 +160,7 @@ public class SeguirTramite extends View {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            controlador.manejarRegistrar(campo1.getText(),"campo1.getText()",campo1.getText());
+            controlador.manejarRegistrar(campo1.getText(),titulo.getText(),campo2.getText());
         }
     }
 
@@ -162,7 +168,7 @@ public class SeguirTramite extends View {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            controlador.manejarBuscar(campo1.getText());
+            controlador.manejarSalir();
         }
     }
 
